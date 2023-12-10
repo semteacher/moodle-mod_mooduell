@@ -23,9 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace mod_mooduell\tests\behat;
+
 use mod_mooduell\game_control;
 use mod_mooduell\mooduell;
 use mod_mooduell\question_control;
+use mod_mooduell_external;
 use SebastianBergmann\Environment\Console;
 
 // NOTE: no MOODLE_INTERNAL test here, this file may be required by behat before including /config.php.
@@ -38,7 +41,7 @@ use SebastianBergmann\Environment\Console;
  * @copyright  2021 Wunderbyte Gmbh <info@wunderbyte.at>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class behat_mooduell extends behat_base {
+class behat_mooduell extends \behat_base {
 
     /**
      * Creates new mooduell games in the database

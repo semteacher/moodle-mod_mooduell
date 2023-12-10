@@ -30,6 +30,7 @@ use coding_exception;
 use context_course;
 use mod_mooduell_generator;
 use mod_mooduell_external;
+use mod_mooduell\tests\behat\behat_mooduell;
 
 /**
  * Test class for mooduell external functions.
@@ -279,5 +280,51 @@ class mooduell_external_test extends advanced_testcase {
         $this->assertEquals(0, $game->playerbqplayed);
         $this->assertEquals(0, $game->winnerid);
         $this->assertEquals(1, $game->status);
+    }
+
+    /**
+     * Test get highscores.
+     * @runInSeparateProcess
+     * @covers ::get_highscores
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    public function test_get_highscores() {
+
+        list($duel1, $user1, $user2, $cmd1, $course) = $this->returntestdata();
+
+        // Game will be started in behalf of user1.
+        $this->setUser($user1);
+        $attempt = mod_mooduell_external::start_attempt($course->id, $cmd1->id, $user2->id);
+
+        //$bm = new \behat_base();
+        $bm = new behat_mooduell();
+        $bm->i_play_all_open_questions_as($user1->username);
+        $bm->i_play_all_open_questions_as($user2->username);
+        $bm->i_play_all_open_questions_as($user1->username);
+        $bm->i_play_all_open_questions_as($user2->username);
+        // Player A question 0 - submit correct answer.
+        //$questionid = (int) $attempt->questions[0]->questionid;
+        //$answerid = array_search(true, array_column($attempt->questions[0]->answers, 'correct', 'id'));
+        //$res = mod_mooduell_external::answer_question($cmd1->id, $attempt->gameid, $questionid, [$answerid]);
+
+        // Player A question 1 - submit incorrect answer.
+        //$questionid = (int) $attempt->questions[1]->questionid;
+        //$answerid = array_search(false, array_column($attempt->questions[1]->answers, 'correct', 'id'));
+        //$res = mod_mooduell_external::answer_question($cmd1->id, $attempt->gameid, $questionid, [$answerid]);
+
+        // Get games data.
+        $game = mod_mooduell_external::get_game_data($course->id, $cmd1->id, $attempt->gameid);
+        var_dump($game);
+        //$res = mod_mooduell_external::get_highscores($cmd1->id);
+        // Check game data.
+        //$this->assertEquals($user1->id, (int) $game->playeraid);
+        //$this->assertEquals($user2->id, (int) $game->playerbid);
+        //$this->assertEquals(1, $game->playeracorrect);
+        //$this->assertEquals(0, $game->playerbcorrect);
+        //$this->assertEquals(2, $game->playeraqplayed);
+        //$this->assertEquals(0, $game->playerbqplayed);
+        //$this->assertEquals(0, $game->winnerid);
+        //$this->assertEquals(1, $game->status);
     }
 }
